@@ -9,6 +9,10 @@
         <servlet-class>controlador.ServletAnadirC</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>NuevoUsuarioServlet</servlet-name>
+        <servlet-class>controlador.NuevoUsuarioServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServletBB</servlet-name>
         <servlet-class>controlador.ServletBB</servlet-class>
     </servlet>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/IndexServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NuevoUsuarioServlet</servlet-name>
+        <url-pattern>/NuevoUsuarioServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletAnadirC</servlet-name>
