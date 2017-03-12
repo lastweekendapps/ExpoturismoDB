@@ -6,14 +6,16 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class UsuarioDAO {
-    
+
     private RandomAccessFile raf;
     private RandomAccessFile rafTree;
     private long ref;
-    private long finalTreeLenght;
+    private long finalTreeLength;
 
     public UsuarioDAO() throws FileNotFoundException, IOException, EOFException {
 
+        
+        
         this.raf = new RandomAccessFile("/Volumes/NICOLAS/usuarios.txt", "rw");
         this.rafTree = new RandomAccessFile("/Volumes/NICOLAS/usuarios.txt", "rw");//Maneja el árbol en el archivo usuarios.txt
 
@@ -21,9 +23,9 @@ public class UsuarioDAO {
 
         try {
             ref = this.raf.readLong();
-            finalTreeLenght = ref;
+            finalTreeLength = ref;
         } catch (EOFException e) {
-            finalTreeLenght = 8;
+            finalTreeLength = 8;
             this.raf.seek(0);
 
             for (int i = 0; i < 2808; i = i + 2) {
@@ -32,56 +34,92 @@ public class UsuarioDAO {
         }
 
     }
-   
 
-    public void crearArchivo(UsuarioVO user) throws IOException {
-
-        raf.seek(raf.length());//Salta en el archivo hasta la última posición
-        long posición = raf.getFilePointer();
-
-        raf.writeInt(user.getId());//Mete el ID en el archivo
-
+    public boolean crearArchivo(UsuarioVO user) throws IOException {
         
-        //Mete el nombre en el archivo con los espacios adicionales para completar el tamaño
-        for (int i = 0; i < user.getUser().length; i++) {
-            raf.writeChar(user.getUser()[i]);
-        }
-        for (int i = user.getUser().length; i < 20; i++) {
-            raf.writeChar('\u0000');
+        
+        boolean existe = false;
+        boolean existia = false;
+        long posAntigua = 0;
+
+        for (int i = 8; i < finalTreeLength; i = i + 28) {
+            rafTree.seek(i);
+            if (rafTree.readInt() == user.getId()) {
+                existe = true;
+                rafTree.skipBytes(16);
+                System.out.println("i>>>> " + i);
+                System.out.println("Ya existe!");
+
+                if (rafTree.readLong() == -1) {
+                    System.out.println("ay hola");
+
+                    rafTree.seek(rafTree.getFilePointer() - 28);
+                    posAntigua = 2808 + (rafTree.getFilePointer() - 8) / 28 * 84;
+
+                    existe = false;
+                    existia = true;
+                }
+
+            }
         }
 
-        //Mete el correo en el archivo con los espacios adicionales para completar el tamaño
-        for (int i = 0; i < user.getPassword().length; i++) {
-            raf.writeChar(user.getPassword()[i]);
+        if (!existe) {
+
+            if (existia) {
+                raf.seek(posAntigua);
+            } else {
+                raf.seek(raf.length());//Salta en el archivo hasta la última posición
+
+            }
+            long posición = raf.getFilePointer();
+
+            raf.writeInt(user.getId());//Mete el ID en el archivo
+
+            //Mete el nombre en el archivo con los espacios adicionales para completar el tamaño
+            for (int i = 0; i < user.getUser().length; i++) {
+                raf.writeChar(user.getUser()[i]);
+            }
+            for (int i = user.getUser().length; i < 20; i++) {
+                raf.writeChar('\u0000');
+                
+            }
+
+            //Mete el correo en el archivo con los espacios adicionales para completar el tamaño
+            for (int i = 0; i < user.getPassword().length; i++) {
+                raf.writeChar(user.getPassword()[i]);
+            }
+            for (int i = user.getPassword().length; i < 20; i++) {
+                raf.writeChar('\u0000');
+            }
+            arbol(user.getId(), posición, existia);
+            System.out.println("Agregado");
+            return true;
+        } else {
+            return false;
         }
-        for (int i = user.getPassword().length; i < 20; i++) {
-            raf.writeChar('\u0000');
-        }
-        arbol(user.getId(), posición);
 
     }
 
-    private void arbol(int id, long pos) throws FileNotFoundException, IOException {
+    private void arbol(int id, long pos, boolean existia) throws FileNotFoundException, IOException {
         rafTree.seek(8);
         boolean flag = false;
 
         while (!flag) {
+            
             long posicion = this.rafTree.getFilePointer();
 
-            if (finalTreeLenght == 8) {
-               
+            if (finalTreeLength == 8) {
 
-                this.rafTree.seek(finalTreeLenght);
+                this.rafTree.seek(finalTreeLength);
                 this.rafTree.writeInt(id);
                 this.rafTree.writeLong(-1);
                 this.rafTree.writeLong(-1);
                 this.rafTree.writeLong(pos);
 
-
-                finalTreeLenght = this.rafTree.getFilePointer();
+                finalTreeLength = this.rafTree.getFilePointer();
 
                 this.rafTree.seek(0);
-                this.rafTree.writeLong(finalTreeLenght);
+                this.rafTree.writeLong(finalTreeLength);
 
                 flag = true;
 
@@ -97,8 +135,8 @@ public class UsuarioDAO {
                     this.rafTree.seek(posicion + 12);
 
                     if (derPos == -1) {
-                        this.rafTree.writeLong(finalTreeLenght);//???????????????????
-                        this.rafTree.seek(finalTreeLenght);
+                        this.rafTree.writeLong(finalTreeLength);//???????????????????
+                        this.rafTree.seek(finalTreeLength);
                         this.rafTree.writeInt(id); //Revisar
                         this.rafTree.writeLong(-1);
                         this.rafTree.writeLong(-1);
@@ -106,22 +144,22 @@ public class UsuarioDAO {
 
                         flag = true;
 
-                        finalTreeLenght = this.rafTree.getFilePointer();
+                        finalTreeLength = this.rafTree.getFilePointer();
                         this.rafTree.seek(0);
-                        this.rafTree.writeLong(finalTreeLenght);
+                        this.rafTree.writeLong(finalTreeLength);
 
                     } else {
                         //arbol(derPos, id, pos, cont);
                         this.rafTree.seek(derPos);
                     }
-                } else {
+                } else if(actual > id){
 
                     this.rafTree.seek(posicion + 4);
                     long izqPos = this.rafTree.readLong();
                     this.rafTree.seek(posicion + 4);
                     if (izqPos == -1) {
-                        this.rafTree.writeLong(finalTreeLenght);
-                        this.rafTree.seek(finalTreeLenght);
+                        this.rafTree.writeLong(finalTreeLength);
+                        this.rafTree.seek(finalTreeLength);
                         this.rafTree.writeInt(id); //Revisar
                         this.rafTree.writeLong(-1);
                         this.rafTree.writeLong(-1);
@@ -129,13 +167,18 @@ public class UsuarioDAO {
 
                         flag = true;
 
-                        finalTreeLenght = this.rafTree.getFilePointer();
+                        finalTreeLength = this.rafTree.getFilePointer();
                         this.rafTree.seek(0);
-                        this.rafTree.writeLong(finalTreeLenght);
+                        this.rafTree.writeLong(finalTreeLength);
                     } else {
 
                         this.rafTree.seek(izqPos);
                     }
+                }else if(actual == id && existia){
+                    
+                    rafTree.skipBytes(20);
+                    rafTree.writeLong(pos);
+                    
                 }
             }
         }
@@ -239,3 +282,4 @@ public class UsuarioDAO {
     }
 
 }
+
