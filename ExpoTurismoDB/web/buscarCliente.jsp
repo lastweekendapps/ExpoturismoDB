@@ -73,7 +73,7 @@
                         </td>
                     </form>
                     <td style="padding-left: 150px">
-                        <form action="ServletListarC" method="GET">
+                        <form action="listarClientes.jsp" method="GET">
                             <input type="submit" value="Listar a todos los clientes">
                         </form>
                     </td>
