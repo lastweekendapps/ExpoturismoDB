@@ -80,6 +80,7 @@ public class UsuarioDAO {
             }
             for (int i = user.getUser().length; i < 20; i++) {
                 raf.writeChar('\u0000');
+                
             }
 
             //Mete el correo en el archivo con los espacios adicionales para completar el tamaño
