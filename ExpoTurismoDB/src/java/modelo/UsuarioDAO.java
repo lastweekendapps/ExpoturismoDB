@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.logging.Logger;
 
 public class UsuarioDAO {
 
@@ -14,8 +15,6 @@ public class UsuarioDAO {
 
     public UsuarioDAO() throws FileNotFoundException, IOException, EOFException {
 
-        
-        
         this.raf = new RandomAccessFile("/Volumes/NICOLAS/usuarios.txt", "rw");
         this.rafTree = new RandomAccessFile("/Volumes/NICOLAS/usuarios.txt", "rw");//Maneja el árbol en el archivo usuarios.txt
 
@@ -36,12 +35,22 @@ public class UsuarioDAO {
     }
 
     public boolean crearArchivo(UsuarioVO user) throws IOException {
-        
-        
+
         boolean existe = false;
         boolean existia = false;
         long posAntigua = 0;
-
+        
+        if(user.getId()<=0){
+          return false;  
+        }
+        if(user.getUser().length==0||user.getUser()==null){
+            return false;
+        }
+        if(user.getPassword().length==0||user.getPassword()==null){
+            return false;
+        }
+        
+        
         for (int i = 8; i < finalTreeLength; i = i + 28) {
             rafTree.seek(i);
             if (rafTree.readInt() == user.getId()) {
@@ -81,7 +90,7 @@ public class UsuarioDAO {
             }
             for (int i = user.getUser().length; i < 20; i++) {
                 raf.writeChar('\u0000');
-                
+
             }
 
             //Mete el correo en el archivo con los espacios adicionales para completar el tamaño
@@ -105,7 +114,7 @@ public class UsuarioDAO {
         boolean flag = false;
 
         while (!flag) {
-            
+
             long posicion = this.rafTree.getFilePointer();
 
             if (finalTreeLength == 8) {
@@ -152,7 +161,7 @@ public class UsuarioDAO {
                         //arbol(derPos, id, pos, cont);
                         this.rafTree.seek(derPos);
                     }
-                } else if(actual > id){
+                } else if (actual > id) {
 
                     this.rafTree.seek(posicion + 4);
                     long izqPos = this.rafTree.readLong();
@@ -174,11 +183,11 @@ public class UsuarioDAO {
 
                         this.rafTree.seek(izqPos);
                     }
-                }else if(actual == id && existia){
-                    
+                } else if (actual == id && existia) {
+
                     rafTree.skipBytes(20);
                     rafTree.writeLong(pos);
-                    
+
                 }
             }
         }
@@ -242,27 +251,8 @@ public class UsuarioDAO {
 
             rafTree.seek(pos);
             rafTree.skipBytes(44);
-            String p = "";
 
-            for (int i = 0; i < 40; i = i + 2) {
-
-                p = p + rafTree.readChar();
-
-            }
-            String actual = "";
-            for (int i = 0; i < p.length(); i++) {
-
-                if (p.charAt(i) == '\u0000') {
-
-                    break;
-
-                } else {
-                    actual = actual + p.charAt(i);
-
-                }
-            }
-
-            if (password.equals(actual)) {
+            if (compararStrings(rafTree, password)) {
 
                 rafTree.seek(pos + 44);
 
@@ -281,5 +271,68 @@ public class UsuarioDAO {
         }
     }
 
-}
+    private boolean compararStrings(RandomAccessFile raf, String s) throws IOException {
+        String p = "";
 
+        for (int i = 0; i < 40; i = i + 2) {
+
+            p = p + raf.readChar();
+
+        }
+        String actual = "";
+        for (int i = 0; i < p.length(); i++) {
+
+            if (p.charAt(i) == '\u0000') {
+
+                break;
+
+            } else {
+                actual = actual + p.charAt(i);
+
+            }
+        }
+        if (s.equals(actual)) {
+
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    public boolean loggear(UsuarioVO user) throws IOException {
+
+        long pos = buscarUsuario(user.getId());
+
+        if (pos != -1) {
+
+            raf.seek(pos);
+            int id = raf.readInt();
+
+            String usuario = "";
+
+            for (int i = 0; i < user.getUser().length; i++) {
+                usuario = usuario + user.getUser()[i];
+            }
+
+            String password = "";
+
+            for (int i = 0; i < user.getPassword().length; i++) {
+                password = password + user.getPassword()[i];
+            }
+
+            boolean uIguales = compararStrings(raf, usuario);
+            boolean pIguales = compararStrings(raf, password);
+
+            if (uIguales && pIguales) {
+                return true;
+            }
+
+        } else {
+
+            return false;
+
+        }
+        return false;
+    }
+}
