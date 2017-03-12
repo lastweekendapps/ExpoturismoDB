@@ -47,13 +47,13 @@ public class ClienteDAO {
         return clienteDAO;
     }
     
-    public void crearArchivo(int cedula, String nombre, String email, int telefono, String nombreBD) throws IOException{
+    public void crearArchivo(ClienteVO cliente) throws IOException{
         this.raf.seek(raf.length());
         long posicion = this.raf.getFilePointer();
         
-        this.raf.writeInt(cedula);
-        char name [] = nombre.toCharArray();
-        char correo [] = email.toCharArray();
+        this.raf.writeInt(cliente.getCedula());
+        char name [] = cliente.getNombre().toCharArray();
+        char correo [] = cliente.getEmail().toCharArray();
         
         for (int i = 0; i < name.length; i++) {
             this.raf.writeChar(name[i]);
@@ -69,8 +69,8 @@ public class ClienteDAO {
             this.raf.writeChar('\u0000');
         }
         
-        this.raf.writeInt(telefono);
-        
+        this.raf.writeInt(cliente.getTelefono());
+        arbol(cliente.getCedula(), posicion);
     }
     
     public int leerEntero(long posByte) throws IOException {
@@ -196,39 +196,66 @@ public class ClienteDAO {
         return -1;
     }
     
-    public void editarNombreCliente(long pos, String nombre) throws IOException{
-        this.raf.seek(pos+4);
-        for (int i = 0; i < 20; i++) {
-            this.raf.writeChar('\u0000');
+    public boolean editarNombreCliente(int id, String nombre) throws IOException{
+        
+        long pos = buscarCliente(id);
+        
+        if(pos == -1){
+            return false;
+        }else{
+            this.raf.seek(pos+4);
+            for (int i = 0; i < 20; i++) {
+                this.raf.writeChar('\u0000');
+            }
+            this.raf.seek(pos+4);
+            char name [] = nombre.toCharArray();
+            for (int i = 0; i < name.length; i++) {
+                this.raf.writeChar(name[i]);
+            }
+            for (int i = name.length; i < 20; i++) {
+                this.raf.writeChar('\u0000');
+            }
+            return true;
         }
-        this.raf.seek(pos+4);
-        char name [] = nombre.toCharArray();
-        for (int i = 0; i < name.length; i++) {
-            this.raf.writeChar(name[i]);
-        }
-        for (int i = name.length; i < 20; i++) {
-            this.raf.writeChar('\u0000');
-        }
+        
     }
     
-    public void editarEmailCliente(long pos, String email) throws IOException{
-        this.raf.seek(pos+44);
-        for (int i = 0; i < 20; i++) {
-            this.raf.writeChar('\u0000');
+    public boolean editarEmailCliente(int id, String email) throws IOException{
+        
+        long pos = buscarCliente(id);
+        
+        if (pos == -1) {
+            return false;
+        }else{
+            this.raf.seek(pos+44);
+            for (int i = 0; i < 20; i++) {
+                this.raf.writeChar('\u0000');
+            }
+            this.raf.seek(pos+44);
+            char correo [] = email.toCharArray();
+            for (int i = 0; i < correo.length; i++) {
+                this.raf.writeChar(correo[i]);
+            }
+            for (int i = correo.length; i < 20; i++) {
+                this.raf.writeChar('\u0000');
+            }
+            return true;
         }
-        this.raf.seek(pos+44);
-        char correo [] = email.toCharArray();
-        for (int i = 0; i < correo.length; i++) {
-            this.raf.writeChar(correo[i]);
-        }
-        for (int i = correo.length; i < 20; i++) {
-            this.raf.writeChar('\u0000');
-        }
+        
     }
     
-    public void editarTelefonoCliente(long pos, int telefono) throws IOException{
-        this.raf.seek(pos+84);
-        this.raf.writeInt(telefono);
+    public boolean editarTelefonoCliente(int id, int telefono) throws IOException{
+        
+        long pos = buscarCliente(id);
+        
+        if (pos == -1) {
+            return false;
+        }else{
+            this.raf.seek(pos+84);
+            this.raf.writeInt(telefono);
+            return true;
+        }
+        
     }
     
     public void borrarCliente(int id) throws IOException{
@@ -256,5 +283,70 @@ public class ClienteDAO {
                 this.rafTree.writeFloat(-1);
             }
         }
+    }
+    
+    public String [] listarCorreos() throws IOException{
+        int cantidad = 0;
+        if (finalPos != 8) {
+            cantidad = (int) finalPos / 28;
+        }
+        String correos [] = new String [cantidad];
+        
+        for (int i = 8; i < finalPos; i+=28) {
+            this.rafTree.seek(i+20);
+            this.raf.seek(this.rafTree.readLong());
+            this.raf.skipBytes(44);
+            String correo = "";
+            for (int j = 0; j < 20; j++) {
+                correo += this.raf.readChar();
+            }
+            correos [i] = correo;
+        }
+        
+        return correos;
+    }
+    
+    public boolean usuarioRegistrado(int id) throws IOException{ 
+        //Si no está registrado pero el id existe, toca meter los datos con el editar
+        if (idExistente(id)) {
+            for (int i = 8; i < finalPos; i += 28) {
+                this.rafTree.seek(i);
+                int actual = this.rafTree.readInt();
+                if (actual == id) {
+                    this.rafTree.seek(i+20);
+                    long posId = this.rafTree.readLong();
+                    if (posId != -1) {
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        } 
+        return false;
+    }
+    
+    public boolean idExistente(int id) throws IOException{
+        for (int i = 8; i < finalPos; i+=28) {
+            this.rafTree.seek(i);
+            int actual = this.rafTree.readInt();
+            if (actual == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public long recuperarRegistro(int id) throws IOException{
+        int pos = -1;
+        for (int i = 8; i < finalPos; i+=28) {
+            this.rafTree.seek(i);
+            int actual = this.rafTree.readInt();
+            if (actual == id) {
+                pos = i;
+            }
+        }
+        
+        return (((pos-8)/28)*88)+2808;
     }
 }
