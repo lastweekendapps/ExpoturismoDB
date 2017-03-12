@@ -104,6 +104,7 @@ public class UsuarioDAO {
         boolean flag = false;
 
         while (!flag) {
+            
             long posicion = this.rafTree.getFilePointer();
 
             if (finalTreeLength == 8) {
