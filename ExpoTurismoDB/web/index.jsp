@@ -68,15 +68,25 @@
                     <%System.out.println("aaa>>>>>>>>>>>>>>>    " + request.getAttribute("Mensaje"));%>
 
                 </form>
-                    <%if (request.getAttribute("Mensaje") == "ok") {%>
-                    <meta  http-equiv = "Content-Type" content = "text/html; charset=utf-8"> 
-                    <meta http-equiv = "refresh" content = "0;URL=opciones.jsp" >                  
-                    <%} else if(request.getAttribute("Mensaje") == "error"){%>
+                <%if (request.getAttribute("Mensaje") == "ok") {%>
+                <meta  http-equiv = "Content-Type" content = "text/html; charset=utf-8"> 
+                <meta http-equiv = "refresh" content = "0;URL=opciones.jsp" >                  
+                <%} %>
+                <%if (request.getAttribute("Mensaje1") == "no es numero") {%>
 
-                        <h4>Los valores ingresados no coinciden o el usario no existe.</h4>
-                        <h4>Asegúrese de llenar todos los campos correctamente.</h4><br>
-                    
-                    <%}%>
+
+                <script>alert("Error: el id debe ser un número.");</script>
+
+
+                <%} else if (request.getAttribute("Mensaje") == "error") {%>
+
+                <script>alert("Los valores ingresador no coinciden o el usuario no existe.\n\
+Asegúrese de llenar todos lo campos correctamente.");</script>
+
+                
+                <%}%>
+
+
             </div>
             <div class="clearfix"></div>
         </div>
