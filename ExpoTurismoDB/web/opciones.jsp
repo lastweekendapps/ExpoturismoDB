@@ -48,37 +48,37 @@
             <table>
                 <tr>
                     <td>
-                        <form action="ServletNuevoC">
+                        <form action="nuevoCliente.jsp">
                             <input type="submit" value="Nuevo Cliente" style="margin-left: 200px">
                         </form>
                     </td>
                 
                     <td>
-                        <form action="ServletBuscarC">
+                        <form action="buscarCliente.jsp">
                                            <input type="submit" value="Buscar Cliente">
                         </form>
                     </td>
                     
                     <td>
-                        <form action="ServletEditarC">
+                        <form action="editarCliente.jsp">
                             <input type="submit" value="Editar Cliente">
                         </form>
                     </td>
                     
                     <td>
-                        <form action="ServletNuevoU">
+                        <form action="nuevoUsuario.jsp">
                             <input type="submit" value="Nuevo Usuario">
                         </form>
                     </td>
                     
                     <td>
-                        <form action="ServletNuevoR">
+                        <form action="nuevoRecordatorio.jsp">
                             <input type="submit" value="Nuevo Recordatorio">
                         </form>
                     </td>
                     
                     <td>
-                        <form action="ServletProgramas">
+                        <form action="programas.jsp">
                             <input type="submit" value="Programas">
                         </form>
                     </td>
