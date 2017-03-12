@@ -130,13 +130,14 @@
             <table text-align="center">
                 <tr>
                     <td>
-                        <form action="ServletNewU" method="GET" id="newU">
+                        <form action="NuevoUsuarioServlet" method="GET" id="newU">
                             USUARIO: <input class="enjoy-input" type="text" name="nombre"<br><br><br>
                             <div class="confC">CONFIRMAR CONTRASEÑA: <input class="enjoy-input" type="password" name="psw"></div><br><br>
                         </form>
                     </td>
-                    <td style="padding-bottom: 60px">
+                    <td style="padding-left: 30px ; padding-bottom: 40px">
                             CONTRASEÑA: <input class="enjoy-input" type="password" name="confPsw" form="newU"><br><br>
+                            ID: <input class="enjoy-input" type="text" name="id" form="newU"><br><br>
                     </td>
                 </tr>
             </table>
