@@ -344,6 +344,8 @@ public class ClienteDAO {
             int actual = this.rafTree.readInt();
             if (actual == id) {
                 pos = i;
+                this.rafTree.skipBytes(16);
+                this.rafTree.writeLong((((pos-8)/28)*88)+2808);
             }
         }
         

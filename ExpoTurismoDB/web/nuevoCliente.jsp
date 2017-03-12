@@ -42,23 +42,28 @@
         <div class="title"><h2>NUEVO CLIENTE:</h2></div>
         <div class="form">
             <table text-align="center">
-                <tr>
-                    <td>
-                        <form action="ServletAnadirC" method="GET" id="anadir">
+                
+                    <form action="ServletAnadirC" method="GET" id="anadir">
+                        <tr>
+                            <td>
                             NOMBRE: <input type="text" name="nombre"><br><br>
                             CEDULA: <input type="text" name="cedula"><br><br>
                             DESTINO: <input type="text" name="destino"><br><br>
                             ACOMPAÑANTES: <input type="text" name="acompanantes">
-                        </form>
-                    </td>
-                    <td>
+                            </td>
+                            <td>
                             EMAIL: <input type="text" name="email" form="anadir"><br><br>
                             TELÉFONO: <input type="text" name="telefono" form="anadir"><br><br>
                             FECHA: <input type="text" name="fecha" form="anadir"><br><br>
-                    </td>
-                </tr>
+                            </td>   
+                        </tr>
+                        <tr>
+                            <div class="button"><input type="submit" value="AÑADIR CLIENTE" form="anadir"/></div>
+                        </tr>
+                    </form>
+                
             </table>
         </div><br><br>
-        <div class="button"><input type="submit" value="AÑADIR CLIENTE" form="anadir"/></div>
+        
     </body>
 </html>

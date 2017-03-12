@@ -4,9 +4,41 @@
         <servlet-name>IndexServlet</servlet-name>
         <servlet-class>controlador.IndexServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletAnadirC</servlet-name>
+        <servlet-class>controlador.ServletAnadirC</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletBB</servlet-name>
+        <servlet-class>controlador.ServletBB</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletBorrarCliente</servlet-name>
+        <servlet-class>controlador.ServletBorrarCliente</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletListarC</servlet-name>
+        <servlet-class>controlador.ServletListarC</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/IndexServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAnadirC</servlet-name>
+        <url-pattern>/ServletAnadirC</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletBB</servlet-name>
+        <url-pattern>/ServletBB</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletBorrarCliente</servlet-name>
+        <url-pattern>/ServletBorrarCliente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletListarC</servlet-name>
+        <url-pattern>/ServletListarC</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -57,14 +57,21 @@
         <div class="fForm">
             <table >
                 <tr>
-                    <td>
-                        <form action="ServletBB" method="GET" id="searchndestroy">
+                    <form action="ServletBB" method="GET" id="searchndestroy">
+                        <td>
                             <input type="text" name="busqueda">
-                        </form>
-                    </td>
-                    <td>
-                        <input type="submit" value="Buscar" form="searchndestroy">
-                    </td>
+                        </td>
+                        <td>
+                            <input type="submit" value="Buscar" form="searchndestroy" class="formulario">
+                            <%
+                                String cc = (String)request.getAttribute("cedula");
+                                String name = (String)request.getAttribute("nombre");
+                                String correo = (String)request.getAttribute("email");
+                                String tel = (String)request.getAttribute("telefono");
+                              %>
+                            
+                        </td>
+                    </form>
                     <td style="padding-left: 150px">
                         <form action="ServletListarC" method="GET">
                             <input type="submit" value="Listar a todos los clientes">
@@ -74,22 +81,29 @@
             </table>
         </div>
         <br><br>
-        <div class="form">
+        <div class="formulario">
             <table text-align="center">
                 <tr>
                     <td>
-                            NOMBRE: <input type="text" name="nombre" form="searchndestroy"><br><br>
-                            CEDULA: <input type="text" name="cedula" form="searchndestroy"><br><br>
+                        NOMBRE: <input type="text" name="nombre" form="searchndestroy" <%if(name != null){%>value="<%=name%>"<%}%>><br><br>
+                        CEDULA: <input type="text" name="cedula" form="searchndestroy"<%if(cc != null){%>value="<%=cc%>"<%}%>><br><br>
                     </td>
                     <td style="padding-left: 50px">
-                            EMAIL: <input type="text" name="email" form="searchndestroy"><br><br>
-                            TELÉFONO: <input type="text" name="telefono" form="searchndestroy"><br><br>
+                            EMAIL: <input type="text" name="email" form="searchndestroy"<%if(correo != null){%>value="<%=correo%>"<%}%>><br><br>
+                            TELÉFONO: <input type="text" name="telefono" form="searchndestroy"<%if(tel != null){%>value="<%=tel%>"<%}%>><br><br>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div class="borrar">
+                            <form action ="ServletBorrarCliente" method="get" name="borrar">
+                                <input type="submit" value="Borrar" class="formulario">
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                
             </table>
-        </div><br><br>
-        <div class="borrar">
-            <input type="submit" value="Borrar" form="searchndestroy">
         </div>
         
     </body>
