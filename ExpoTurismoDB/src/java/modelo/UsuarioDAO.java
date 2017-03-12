@@ -14,6 +14,8 @@ public class UsuarioDAO {
 
     public UsuarioDAO() throws FileNotFoundException, IOException, EOFException {
 
+        
+        
         this.raf = new RandomAccessFile("/Volumes/NICOLAS/usuarios.txt", "rw");
         this.rafTree = new RandomAccessFile("/Volumes/NICOLAS/usuarios.txt", "rw");//Maneja el árbol en el archivo usuarios.txt
 
