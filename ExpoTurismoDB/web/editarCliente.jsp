@@ -60,36 +60,49 @@
         <div class="subtitle"><h3>Ingrese la cedula del cliente:</h3></div><br>
         <div class="fForm">
             <table >
-                <tr>
-                    <td>
-                        <form action="ServletEdit" method="GET" id="edit">
-                            <input type="text" name="busqueda" class="buscar">
-                        </form>
-                    </td>
-                    <td>
-                        <input type="submit" value="Buscar" form="edit">
-                    </td>
-                </tr>
-            </table>
+                
+                    
+                        <form action="ServletEdit" method="GET" name="edit">
+                            <tr>
+                            <td>
+                                <input type="text" name="busqueda" class="buscar">
+                            </td>
+                            <td>
+                                <input type="submit" value="Buscar" form="edit">
+                                <%
+                                    String cc = (String)request.getAttribute("cedula");
+                                    String name = (String)request.getAttribute("nombre");
+                                    String correo = (String)request.getAttribute("email");
+                                    String tel = (String)request.getAttribute("telefono");
+                                %>
+                            </td>
+                            <td>
+                                <div class="editar">
+                                    <input type="submit" value="Editar" form="edit">
+                                </div>
+                            </td>
+                            </tr>
+                            </table>
         </div>
         <br><br>
         <div class="form">
             <table text-align="center">
                 <tr>
                     <td>
-                            NOMBRE: <input type="text" name="nombre" form="edit"><br><br>
-                            CEDULA: <input type="text" name="cedula" form="edit"><br><br>
+                            NOMBRE: <input type="text" name="nombre" form="edit"<%if(name != null){%>value="<%=name%>"<%}%>><br><br>
+                            CEDULA: <input type="text" name="cedula" form="edit"<%if(cc != null){%>value="<%=cc%>"<%}%>><br><br>
                     </td>
                     <td style="padding-left: 50px">
-                            EMAIL: <input type="text" name="email" form="edit"><br><br>
-                            TELÉFONO: <input type="text" name="telefono" form="edit"><br><br>
+                            EMAIL: <input type="text" name="email" form="edit"<%if(correo != null){%>value="<%=correo%>"<%}%>><br><br>
+                            TELÉFONO: <input type="text" name="telefono" form="edit"<%if(tel != null){%>value="<%=tel%>"<%}%>><br><br>
                     </td>
                 </tr>
             </table>
+                        </form>
+                
+            
         </div><br><br>
-        <div class="editar">
-            <input type="submit" value="Editar" form="edit">
-        </div>
+        
         
     </body>
 </html>
