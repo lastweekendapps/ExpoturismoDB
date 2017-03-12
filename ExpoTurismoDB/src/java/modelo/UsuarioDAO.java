@@ -37,7 +37,6 @@ public class UsuarioDAO {
 
     public boolean crearArchivo(UsuarioVO user) throws IOException {
         
-        
         boolean existe = false;
         boolean existia = false;
         long posAntigua = 0;
