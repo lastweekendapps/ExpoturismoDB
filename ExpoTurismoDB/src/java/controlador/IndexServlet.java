@@ -26,6 +26,7 @@ public class IndexServlet extends HttpServlet {
             } catch (Exception e) {
 
                 request.setAttribute("Mensaje1", "no es numero");
+                
                 id = 0;
 
             }

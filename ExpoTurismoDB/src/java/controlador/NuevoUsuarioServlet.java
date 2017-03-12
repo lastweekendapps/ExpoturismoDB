@@ -53,6 +53,7 @@ public class NuevoUsuarioServlet extends HttpServlet {
                 
                 char[] name = request.getParameter("nombre").toCharArray();
                 char[] password = request.getParameter("psw").toCharArray();
+                
                 UsuarioDAO dao = new UsuarioDAO();
                 UsuarioVO user = new UsuarioVO(id, name, password);
 
