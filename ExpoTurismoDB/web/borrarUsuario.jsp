@@ -18,41 +18,41 @@
                 margin: 0;
                 padding: 0;
             }
-            
+
             .logo{
                 text-align: right;
             }
-            
+
             .title{
                 text-align: center;
                 color: #ffffff;
             }
-            
+
             .subtitle{
                 color: #000000;
                 margin-left: 370px;
             }
-            
+
             .form{
                 text-align: center;
                 margin-left: 150px;
                 font-weight: bold;
                 color: #ffffff;
             }
-            
+
             .editar{
                 text-align: center;
             }
-            
+
             .buscar{
                 width: 490px;
             }
-            
+
             .confC{
                 margin-left: 90px;
                 padding-left: 50px;
             }
-            
+
             .btn {
                 background: #3498db;
                 background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
@@ -80,7 +80,7 @@
                 background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
                 text-decoration: none;
             }
-            
+
             .enjoy-input {
                 display: inline-block;
                 -webkit-box-sizing: content-box;
@@ -121,7 +121,7 @@
                 -moz-transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
                 -o-transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
-}
+            }
         </style>    
     </head>
     <body>
@@ -139,14 +139,33 @@
                         USUARIO: <input class="enjoy-input" type="text" name="nombre" form="borrarU"><br><br>
                     </td>
                     <td>
-                            CONTRASEÑA: <input class="enjoy-input" type="password" name="confPsw" form="borrarU"><br><br>
+                        CONTRASEÑA: <input class="enjoy-input" type="password" name="confPsw" form="borrarU"><br><br>
                     </td>
                 </tr>
             </table>
+
         </div><br><br>
         <div class="editar">
             <input class="btn" type="submit" value="Borrar Usuario" form="borrarU">
         </div>
-        
+
+        <%if (request.getAttribute("Mensaje") == "ok") {%>
+        <script>alert("Usuario borrado");</script>
+        <%}%>
+
+        <%if (request.getAttribute("Mensaje1") == "no es un numero") {%>
+        <script>alert("El id debe ser un número");</script>
+        <%} else {%>
+
+            <%if (request.getAttribute("Mensaje") == "no existe") {%>
+            <script>alert("Error: El usuario no se encuentra en los registros.");</script>
+            <%}%>
+            <%if (request.getAttribute("Mensaje") == "no coinciden") {%>
+            <script>alert("Error: El combre de usuario no coincide con el id.");</script>
+            <%}%>
+            <%if (request.getAttribute("Mensaje") == "contraseña incorrecta") {%>
+            <script>alert("Error: Contraseña de administrados incorrecta.");</script>
+            <%}%>
+        <%}%>
     </body>
 </html>
