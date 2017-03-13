@@ -32,14 +32,13 @@ public class BorrarUsuarioServlet extends HttpServlet {
                 id = Integer.parseInt(request.getParameter("id"));
 
             } catch (Exception e) {
-                request.setAttribute("Mensaje1", "no es numero");
                 id = 0;
 
             }
             
             UsuarioDAO dao = new UsuarioDAO();
             
-            int i  = dao.borrarUsuario(id,request.getParameter("nombre"), request.getParameter("nombre"));
+            int i  = dao.borrarUsuario(id,request.getParameter("nombre"), request.getParameter("password"));
             
             if(i==0){
                 
@@ -49,7 +48,7 @@ public class BorrarUsuarioServlet extends HttpServlet {
                 request.setAttribute("Mensaje","no coinciden");
             }
             if(i==2){
-                request.setAttribute("Mensaje","contraseña incorrecta");
+                request.setAttribute("Mensaje","contrasena incorrecta");
             }
             if(i==3){
                 request.setAttribute("Mensaje","ok");
