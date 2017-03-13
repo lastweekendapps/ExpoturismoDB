@@ -7,6 +7,7 @@ package controlador;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,8 +33,11 @@ public class ServletListarC extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             this.cliente = ClienteDAO.getClienteDAO();
-            long cont = 2808;
+            long cont = 5608;
+            ArrayList registros = this.cliente.getNombres();
             
+            request.setAttribute("registros", registros);
+            request.getRequestDispatcher("listarClientes.jsp").forward(request, response);
             
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -42,41 +46,6 @@ public class ServletListarC extends HttpServlet {
             out.println("<title>Servlet ServletListarC</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<table>");
-
-            out.println("<tr>");
-            out.println("<td>Cedula</td>");
-            out.println("<td>Nombre</td>");
-            out.println("<td>correo</td>");
-            out.println("<td>Telefono</td>");
-            out.println("</tr>");
-            System.out.println("Tamaño: "+this.cliente.getTamanoLista());
-            if (this.cliente.getTamanoLista() > 0) {
-                for (int i = 2808; i < this.cliente.getTamanoLista(); i+=88) {
-                    out.println("<tr>");
-                    out.println("<td>"+this.cliente.leerEntero(cont)+"</td>");
-                    cont += 4;
-                    char name [] = this.cliente.leerChars(cont);
-                    out.println("<td>");
-                    for (int j = 0; j < 20; j++) {
-                        out.print(name[j]);
-                    }
-                    out.println("</td>");
-                    cont += 40;
-                    char correo [] = this.cliente.leerChars(cont);
-                    out.println("<td>");
-                    for (int j = 0; j < 20; j++) {
-                        out.print(correo[j]);
-                    }
-                    out.println("</td>");
-                    cont+=40;
-                    out.println("<td>"+this.cliente.leerEntero(cont)+"</td>");
-                    cont+=4;
-                    out.println("</tr>");
-                }
-            }
-            
-            out.println("</table>");
             out.println("</body>");
             out.println("</html>");
         }
