@@ -1,0 +1,16 @@
+SMAP
+editarCliente_jsp.java
+JSP
+*S JSP
+*F
++ 0 editarCliente.jsp
+editarCliente.jsp
+*L
+5,68:44
+73,5:113
+77,15:118
+92,2:133,7
+94,2:147
+96,2:149,7
+98,12:163
+*E
