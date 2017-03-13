@@ -225,17 +225,29 @@ public class UsuarioDAO {
         return -1;
     }
 
-    public boolean borrarUsuario(int id) throws IOException {
+    public int borrarUsuario(int id, String user, String password) throws IOException {
 
         long pos = buscarUsuario(id);
 
         if (pos == -1) {
-            return false;
+            return 0;
         } else {
+            
+            raf.seek(pos+4);
+            
+            boolean names =compararStrings(raf,user);
+            if(!names){
+                return 1;
+            }
+            raf.seek(2852);// Posicion en el archivo en que se encuentra la primera contraseña(la del administrador)
+            boolean pass = compararStrings(raf,password);
+            if(!pass){
+                return 2;
+            }
             rafTree.seek(28 * ((pos - 2808) / 84) + 8);
             rafTree.skipBytes(20);
             rafTree.writeLong(-1);
-            return true;
+            return 3;
         }
 
     }
