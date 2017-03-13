@@ -187,6 +187,7 @@ public class UsuarioDAO {
 
                     rafTree.skipBytes(20);
                     rafTree.writeLong(pos);
+                    flag = true;
 
                 }
             }
