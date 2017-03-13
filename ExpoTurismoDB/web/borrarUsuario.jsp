@@ -139,7 +139,7 @@
                         USUARIO: <input class="enjoy-input" type="text" name="nombre" form="borrarU"><br><br>
                     </td>
                     <td>
-                        CONTRASEÑA: <input class="enjoy-input" type="password" name="confPsw" form="borrarU"><br><br>
+                        CONTRASEÑA: <input class="enjoy-input" type="password" name="password" form="borrarU"><br><br>
                     </td>
                 </tr>
             </table>
@@ -153,19 +153,18 @@
         <script>alert("Usuario borrado");</script>
         <%}%>
 
-        <%if (request.getAttribute("Mensaje1") == "no es un numero") {%>
-        <script>alert("El id debe ser un número");</script>
-        <%} else {%>
 
-            <%if (request.getAttribute("Mensaje") == "no existe") {%>
-            <script>alert("Error: El usuario no se encuentra en los registros.");</script>
-            <%}%>
-            <%if (request.getAttribute("Mensaje") == "no coinciden") {%>
-            <script>alert("Error: El combre de usuario no coincide con el id.");</script>
-            <%}%>
-            <%if (request.getAttribute("Mensaje") == "contraseña incorrecta") {%>
-            <script>alert("Error: Contraseña de administrados incorrecta.");</script>
-            <%}%>
+        <%if (request.getAttribute("Mensaje") == "no existe") {%>
+        <script>alert("Error: El usuario no se encuentra en los registros.");</script>
         <%}%>
+        <%if (request.getAttribute("Mensaje") == "contrasena incorrecta") {%>
+        <script>alert("Error: Contraseña de administrador incorrecta.");</script>
+        <%System.out.println("problema en la contraseñaaaaaaa");%>
+        <%}%>
+        <%if (request.getAttribute("Mensaje") == "no coinciden") {%>
+        <script>alert("Error: El nombre de usuario no coincide con el id.");</script>
+        <%}%>
+
+
     </body>
 </html>
