@@ -9,6 +9,7 @@ import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 
 /**
  *
@@ -285,27 +286,6 @@ public class ClienteDAO {
         }
     }
     
-    public String [] listarCorreos() throws IOException{
-        int cantidad = 0;
-        if (finalPos != 8) {
-            cantidad = (int) finalPos / 28;
-        }
-        String correos [] = new String [cantidad];
-        
-        for (int i = 8; i < finalPos; i+=28) {
-            this.rafTree.seek(i+20);
-            this.raf.seek(this.rafTree.readLong());
-            this.raf.skipBytes(44);
-            String correo = "";
-            for (int j = 0; j < 20; j++) {
-                correo += this.raf.readChar();
-            }
-            correos [i] = correo;
-        }
-        
-        return correos;
-    }
-    
     public boolean usuarioRegistrado(int id) throws IOException{ 
         //Si no está registrado pero el id existe, toca meter los datos con el editar
         if (idExistente(id)) {
@@ -350,5 +330,43 @@ public class ClienteDAO {
         }
         
         return (((pos-8)/28)*88)+2808;
+    }
+    
+    public ArrayList getNombres() throws IOException{
+        ArrayList reg = new ArrayList();
+        int cantidad = (int) finalPos/28;
+        String nombres [] = new String [cantidad];
+        this.rafTree.seek(28);
+        long primeraPos = this.rafTree.readLong();
+        for (int i = (int) primeraPos; i < this.raf.length(); i+=88) {
+            this.raf.seek(i);
+            int cedula = this.raf.readInt();
+            reg.add(cedula);
+            String nombre = "";
+            for (int j = 0; j < 20; j++) {
+                char n = this.raf.readChar();
+                if (n == '\u0000') {
+                    break;
+                }else{
+                    nombre += n;
+                }
+            }
+            reg.add(nombre);
+            this.raf.seek(i+44);
+            String correo = "";
+            for (int j = 0; j < 20; j++) {
+                char c = this.raf.readChar();
+                if (c == '\u0000') {
+                    break;
+                }else{
+                    correo += c;
+                }
+            }
+            reg.add(correo);
+            this.raf.seek(i+84);
+            int telefono = this.raf.readInt();
+            reg.add(telefono);
+        }
+        return reg;
     }
 }
