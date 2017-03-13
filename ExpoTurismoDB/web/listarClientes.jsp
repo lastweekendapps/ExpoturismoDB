@@ -4,6 +4,7 @@
     Author     : PC USUARIO
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -58,13 +59,11 @@
                 width: 60%;
                 margin-left: 290px;
             }
-
             .tabla td, th {
                 border: 5px solid #dddddd;
                 text-align: left;
                 padding: 8px;
             }
-
             .tabla tr:nth-child(even) {
                 background-color: #dddddd;
             }
@@ -86,7 +85,6 @@
                 padding: 10px 20px 10px 20px;
                 text-decoration: none;
             }
-
             .btn:hover {
                 background: #3cb0fd;
                 background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
@@ -119,7 +117,6 @@
                 -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
             }
-
             .enjoy-input:hover {
                 border: 1px solid #a3a3a3;
                 background: rgba(255,255,255,1);
@@ -128,7 +125,6 @@
                 -o-transition: all 100ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 100ms cubic-bezier(0.42, 0, 0.58, 1);
             }
-
             .enjoy-input:focus {
                 border: 1px solid #018dc4;
                 -webkit-box-shadow: 4px 4px 4px 0 rgba(0,0,0,0.2) inset;
@@ -160,73 +156,18 @@
                     <th>Teléfono</th>
                     <th>Email</th>
                 </tr>
+                <%
+                    //ClienteDAO cliente = ClienteDAO.getClienteDAO();
+                    ArrayList registros = (ArrayList)request.getAttribute("registros");
+                    for (int i = 0; i < registros.size(); i+=4) {
+                %>
                 <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
+                    <td><%=registros.get(i)%></td>
+                    <td><%=registros.get(i+1)%></td>
+                    <td><%=registros.get(i+2)%></td>
+                    <td><%=registros.get(i+3)%></td>
                 </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                <tr>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                    <td>---------------------------</td>
-                </tr>
-                
+                <%  }   %>
             </table>
         </div>
     </body>
